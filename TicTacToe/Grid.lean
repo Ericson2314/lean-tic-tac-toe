@@ -17,12 +17,13 @@ instance : Functor (λ t => Grid t n) where
     inner := Vector.functor.map (Vector.functor.map f) g.inner
   }
 
-def Grid.zip
-    { n : Nat}
-    {t u v : Type}
+
+def Grid.zipWith
+    {n : Nat} {t u : Type}
     (f : t -> u -> v)
-    (g : Grid t n)
-    (g : Grid u n)
-    : Grid v n
-    :=
-  sorry
+    (a : Grid t n)
+    (b : Grid u n)
+    : Grid v n :=
+  {
+    inner := Vector.zipWith (Vector.zipWith f) a.inner b.inner
+  }

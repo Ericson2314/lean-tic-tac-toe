@@ -46,13 +46,16 @@ def completeSeries (v : Vector CellState n) : Option Player :=
 def diagonalOne (b : Board n) : Vector CellState n :=
   Vector.ofFn <| λ x => b.grid.get x x
 
-def diagonalTwo (b : Board n) : Vector CellState n :=
-  Vector.ofFn <| λ x => b.grid.get
-    x
-    {
-      val := n - 1 - x
-      isLt := sorry -- TODO should be easy
+def invertFin (x : Fin n) : Fin n :=
+  match n with
+    | 0 => Fin.elim0 x
+    | (Nat.succ m) => {
+      val := m - x
+      isLt := Nat.sub_lt_succ m ↑x
     }
+
+def diagonalTwo (b : Board n) : Vector CellState n :=
+  Vector.ofFn <| λ x => b.grid.get x (invertFin x)
 
 def gameDone (b : Board n) : Option Player :=
   (((b.grid.inner.array.findSome? completeSeries).orElse

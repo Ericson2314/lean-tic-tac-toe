@@ -10,7 +10,7 @@ def Vector.get
     (i : Fin n)
     : t :=
   g.array[i]'(by
-    rw [←sz]
+    rw [← sz]
     exact i.isLt)
 
 instance Vector.functor : Functor (λ t => Vector t n) where
@@ -19,4 +19,19 @@ instance Vector.functor : Functor (λ t => Vector t n) where
     sz := by
       rw [Array.size_map f v.array]
       exact v.sz
+  }
+
+def Vector.zipWith
+    {n : Nat} {t u : Type}
+    (f : t -> u -> v)
+    (a : Vector t n)
+    (b : Vector u n)
+    : Vector v n :=
+  {
+    array := Array.zipWith a.array b.array f
+    sz := by
+      rw [Array.size_zipWith a.array b.array f]
+      rw [← a.sz, ← b.sz]
+      apply Eq.symm
+      exact Nat.min_self n
   }

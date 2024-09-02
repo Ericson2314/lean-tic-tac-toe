@@ -13,4 +13,4 @@ theorem movesAreValid
   {next : Board n}
   {eval : Board.move prev turn x y = Option.some next}
   : BoardTransition turn prev next
-  := sorry
+  := ⟨x, ⟨y, sorry⟩⟩

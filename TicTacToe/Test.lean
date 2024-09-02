@@ -44,8 +44,8 @@ import TicTacToe
     }
   }
 
-#eval none = @gameDone 3
-  {
+#eval none = gameDone
+  ({
     grid := {
       inner := {
         array := #[
@@ -65,104 +65,104 @@ import TicTacToe
         sz := by simp
       }
     }
-  }
+  } : Board 3)
 
 #eval
   let o := CellState.filled (Player.o)
-  some (Player.o) = @gameDone 3
-  {
-    grid := {
-      inner := {
-        array := #[
-          {
-            array := #[o, o, o]
-            sz := by simp
-          },
-          {
-            array := #[CellState.empty, CellState.empty, CellState.empty]
-            sz := by simp
-          },
-          {
-            array := #[CellState.empty, CellState.empty, CellState.empty]
-            sz := by simp
-          }
-        ],
-        sz := by simp
+  some (Player.o) = gameDone
+    ({
+      grid := {
+        inner := {
+          array := #[
+            {
+              array := #[o, o, o]
+              sz := by simp
+            },
+            {
+              array := #[CellState.empty, CellState.empty, CellState.empty]
+              sz := by simp
+            },
+            {
+              array := #[CellState.empty, CellState.empty, CellState.empty]
+              sz := by simp
+            }
+          ],
+          sz := by simp
+        }
       }
-    }
-  }
+    } : Board 3)
 
 #eval
   let o := CellState.filled (Player.o)
-  some (Player.o) = @gameDone 3
-  {
-    grid := {
-      inner := {
-        array := #[
-          {
-            array := #[o, CellState.empty, CellState.empty]
-            sz := by simp
-          },
-          {
-            array := #[o, CellState.empty, CellState.empty]
-            sz := by simp
-          },
-          {
-            array := #[o, CellState.empty, CellState.empty]
-            sz := by simp
-          }
-        ],
-        sz := by simp
+  some (Player.o) = gameDone
+    ({
+      grid := {
+        inner := {
+          array := #[
+            {
+              array := #[o, CellState.empty, CellState.empty]
+              sz := by simp
+            },
+            {
+              array := #[o, CellState.empty, CellState.empty]
+              sz := by simp
+            },
+            {
+              array := #[o, CellState.empty, CellState.empty]
+              sz := by simp
+            }
+          ],
+          sz := by simp
+        }
       }
-    }
-  }
+    } : Board 3)
 
 #eval
   let o := CellState.filled (Player.o)
-  some (Player.o) = @gameDone 3
-  {
-    grid := {
-      inner := {
-        array := #[
-          {
-            array := #[o, CellState.empty, CellState.empty]
-            sz := by simp
-          },
-          {
-            array := #[CellState.empty, o, CellState.empty]
-            sz := by simp
-          },
-          {
-            array := #[CellState.empty, CellState.empty, o]
-            sz := by simp
-          }
-        ],
-        sz := by simp
+  some (Player.o) = gameDone
+    ({
+      grid := {
+        inner := {
+          array := #[
+            {
+              array := #[o, CellState.empty, CellState.empty]
+              sz := by simp
+            },
+            {
+              array := #[CellState.empty, o, CellState.empty]
+              sz := by simp
+            },
+            {
+              array := #[CellState.empty, CellState.empty, o]
+              sz := by simp
+            }
+          ]
+          sz := by simp
+        }
       }
-    }
-  }
+    } : Board 3)
 
 #eval
   let o := CellState.filled (Player.o)
-  some (Player.o) = @gameDone 3
-  {
-    grid := {
-      inner := {
-        array := #[
-          {
-            array := #[CellState.empty, CellState.empty, o]
-            sz := by simp
-          }
-          {
-            array := #[CellState.empty, o, CellState.empty]
-            sz := by simp
-          },
-          {
-            array := #[o, CellState.empty, CellState.empty]
-            sz := by simp
-          },
-        ],
-        sz := by simp
+  some (Player.o) = gameDone
+    ({
+      grid := {
+        inner := {
+          array := #[
+            {
+              array := #[CellState.empty, CellState.empty, o]
+              sz := by simp
+            },
+            {
+              array := #[CellState.empty, o, CellState.empty]
+              sz := by simp
+            },
+            {
+              array := #[o, CellState.empty, CellState.empty]
+              sz := by simp
+            }
+          ]
+          sz := by simp
+        }
       }
-    }
-  }
+    } : Board 3)

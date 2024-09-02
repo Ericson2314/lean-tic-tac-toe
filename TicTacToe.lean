@@ -36,7 +36,7 @@ def completeSeries (v : Vector CellState (Nat.succ n)) : Option Player :=
     | CellState.empty => none
     | CellState.filled player =>
         if v.array.all (λ c => c == CellState.filled player)
-        then some Player.x
+        then some player
         else none
 
 def diagonalOne (b : Board n) : Vector CellState n :=
@@ -54,22 +54,10 @@ def diagonalTwo (b : Board n) : Vector CellState n :=
   Vector.ofFn <| λ x => b.grid.get x (invertFin x)
 
 def gameDone (b : Board (Nat.succ n)) : Option Player :=
-  (((b.grid.inner.array.findSome? completeSeries).orElse
-  (λ () => b.grid.transpose.inner.array.findSome? completeSeries)).orElse <|
-  (λ () => completeSeries (diagonalOne b))).orElse
-  (λ () => completeSeries (diagonalTwo b))
-
-def BoardTransition {n : Nat} (turn : Player) (prev next : Board n) : Prop :=
-  ∃ (x y : Fin n),
-    Grid.get prev.grid x y = CellState.empty ∧
-    Grid.get next.grid x y = CellState.filled turn ∧
-    ∀ (i j : Fin n),
-      (i ≠ x ∨ j ≠ y) → Grid.get prev.grid i j = next.grid.get i j
-
-theorem movesAreValid
-  {n : Nat}
-  (prev : Board n) (turn : Player) (x y : Fin n)
-  {next : Board n}
-  {eval : Board.move prev turn x y = Option.some next}
-  : BoardTransition turn prev next
-  := sorry
+  let tests : Array (Unit -> Option Player) := #[
+    λ () => b.grid.inner.array.findSome? completeSeries,
+    λ () => b.grid.transpose.inner.array.findSome? completeSeries,
+    λ () => completeSeries (diagonalOne b),
+    λ () => completeSeries (diagonalTwo b)
+  ]
+  Array.foldl Option.orElse none tests

@@ -1,4 +1,4 @@
-import Std.Data.Array
+import Batteries.Data.Array
 
 structure Vector (α : Type) (n : Nat) where
   array : Array α

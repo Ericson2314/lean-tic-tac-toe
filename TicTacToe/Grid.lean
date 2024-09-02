@@ -1,4 +1,4 @@
-import Std.Data.Array
+import Batteries.Data.Array
 
 import TicTacToe.Vector
 

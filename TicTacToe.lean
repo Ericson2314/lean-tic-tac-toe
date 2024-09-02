@@ -45,7 +45,7 @@ def diagonalOne (b : Board n) : Vector CellState n :=
 def invertFin (x : Fin n) : Fin n :=
   match n with
     | 0 => Fin.elim0 x
-    | (Nat.succ m) => {
+    | Nat.succ m => {
       val := m - x
       isLt := Nat.sub_lt_succ m ↑x
     }

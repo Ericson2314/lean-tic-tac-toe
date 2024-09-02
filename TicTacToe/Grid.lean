@@ -4,7 +4,7 @@ import TicTacToe.Vector
 
 structure Grid (t : Type) (n : Nat) where
   inner : Vector (Vector t n) n
-  deriving Repr
+  deriving Repr, DecidableEq
 
 def Grid.get
     {n : Nat} {t : Type}

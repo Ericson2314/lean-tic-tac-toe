@@ -1,6 +1,5 @@
 -- This module serves as the root of the `TicTacToe` library.
 -- Import modules here that should be built as part of the library.
-import TicTacToe.Basic
 import TicTacToe.Vector
 import TicTacToe.Grid
 
@@ -16,13 +15,11 @@ inductive CellState where
 
 structure Board (n : Nat) where
   grid : Grid CellState n
-  deriving Repr
+  deriving Repr, DecidableEq
 
 def Board.init {n : Nat} : Board n := {
   grid := Grid.mkGrid CellState.empty
 }
-
-#eval (Board.init : Board 2)
 
 def Board.move
   (b : Board n) (turn : Player) (x y : Fin n) : Option (Board n) :=
@@ -33,15 +30,14 @@ def Board.move
             | _ => Option.none)
     pure {grid}
 
-#eval (Board.init : Board 2).move Player.x 1 1
-
-def completeSeries (v : Vector CellState n) : Option Player :=
-  if
-    v.array.all (λ c => c == CellState.filled Player.x) then some Player.x
-  else if
-    v.array.all (λ c => c == CellState.filled Player.o) then some Player.o
-  else
-    none
+def completeSeries (v : Vector CellState (Nat.succ n)) : Option Player :=
+  let first := v.get 0
+  match first with
+    | CellState.empty => none
+    | CellState.filled player =>
+        if v.array.all (λ c => c == CellState.filled player)
+        then some Player.x
+        else none
 
 def diagonalOne (b : Board n) : Vector CellState n :=
   Vector.ofFn <| λ x => b.grid.get x x
@@ -57,7 +53,7 @@ def invertFin (x : Fin n) : Fin n :=
 def diagonalTwo (b : Board n) : Vector CellState n :=
   Vector.ofFn <| λ x => b.grid.get x (invertFin x)
 
-def gameDone (b : Board n) : Option Player :=
+def gameDone (b : Board (Nat.succ n)) : Option Player :=
   (((b.grid.inner.array.findSome? completeSeries).orElse
   (λ () => b.grid.transpose.inner.array.findSome? completeSeries)).orElse <|
   (λ () => completeSeries (diagonalOne b))).orElse

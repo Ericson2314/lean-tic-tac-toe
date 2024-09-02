@@ -3,7 +3,7 @@ import Std.Data.Array
 structure Vector (α : Type) (n : Nat) where
   array : Array α
   sz : n = Array.size array
-  deriving Repr
+  deriving Repr, DecidableEq
 
 def Vector.get
     {n : Nat} {α : Type}
@@ -48,44 +48,21 @@ def Vector.ofFn {n : Nat} (f : Fin n → α) : Vector α n
     sz := Eq.symm (Array.size_ofFn f)
   }
 
-def foo
-  {α : Type u}
-  {m : Type u -> Type u_2}
-  [Monad m]
-  [LawfulMonad m]
-  (a : Array α)
-  (n : Nat)
-  (f : α -> m α)
-  : {action: m (Array α) // SatisfiesM (fun (x : Array α) => x.size = a.size) action}
-  := {
-      val := a.modifyM n f
-      property := a.size_modifyM n f
-    }
-
--- Not sure how to do this,
--- see https://leanprover.zulipchat.com/#narrow/stream/113489-new-members/topic/.E2.9C.94.20Proofs.20inside.20monads/near/466762282
-def internalizePostCondition
-  {m : Type u -> Type u_2}
-  [Monad m]
-  [LawfulMonad m]
-  (action : {action: m α // SatisfiesM p action})
-  : m {value: α // p value}
-  := sorry
-
 def Vector.modifyM
     {n : Nat}
     {m : Type -> Type}
     [Monad m]
-    [LawfulMonad m]
     (v : Vector α n)
     (i : Fin n)
     (f : α → m α)
     : m (Vector α n) :=
   do
-    let array ← internalizePostCondition (foo v.array i f)
+    let x := v.get i
+    let x' <- f x
+    let i' := by rw [← v.sz]; exact i
     pure {
-      array := array.val
+      array := v.array.set i' x'
       sz := by
-        rw [array.property]
+        rw [v.array.size_set i' x']
         exact v.sz
     }
